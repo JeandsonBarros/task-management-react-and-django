@@ -1,0 +1,72 @@
+.container,
+.containerTask {
+    min-height: 100vh;
+}
+
+.clock {
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    border: 1px solid #fff;
+    margin: 20px;
+}
+
+
+.listTasks {
+    margin: 10px 10px 130px 10px;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+
+}
+
+.options {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 70px;
+    justify-content: space-between;
+}
+
+.divFilter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+    align-items: center;
+    margin: 10px;
+}
+
+.searchContainer {
+    margin: 10px 0 10px 0;
+    width: 300px;
+}
+
+
+@media only screen and (max-width: 640px) {
+
+    .searchContainer {
+        margin-top: 10px;
+        width: 100vw;
+    }
+
+    .clock{
+        display: none;
+    }
+
+}
+
+
+.addButtonTask {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}

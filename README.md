@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# To-do list manager with React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To-do list management web application, 
+developed with [React](https://github.com/facebook/create-react-app) 
+and [Django REST framework](https://www.django-rest-framework.org/).
+
+<img src='./print_tasks.png' />
+
+## Installation of dependencies:
+
+In the project directory, you can run:
+
+### `npm install`
 
 ## Available Scripts
 

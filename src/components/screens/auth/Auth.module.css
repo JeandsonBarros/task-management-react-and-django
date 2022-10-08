@@ -1,0 +1,87 @@
+.container,
+.containerRegister {
+    min-height: 100vh;
+}
+
+.cardLogin,
+.formLogin,
+.containerRegister {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardLogin {
+
+    flex-direction: column;
+
+    max-width: 400px;
+    padding: 20px;
+    margin: 10px auto;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+}
+
+.registerLink {
+    color: rgb(0, 115, 150);
+    margin-top: 10px;
+
+}
+
+.textFieldContainer {
+    width: 300px;
+    margin-top: 20px;
+}
+
+.formLogin {
+    height: 100vh;
+}
+
+
+.formRegister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    width: 610px;
+    margin: 10px;
+
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+@media only screen and (max-width: 640px) {
+
+
+    .inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .formRegister {
+        width: 90vw;
+    }
+
+}
+
+.inputContainer {
+    margin: 10px;
+}
+

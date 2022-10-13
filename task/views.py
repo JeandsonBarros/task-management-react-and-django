@@ -31,7 +31,7 @@ class TaskListAndCreateView(APIView, LimitOffsetPagination):
 
         taskDate = request.query_params.get('date')
         if taskDate is not None:
-            tasks = Task.objects.filter(taskDate__contains=taskDate, user=request.user).order_by('taskDate')
+            tasks = Task.objects.filter(taskDate__date=taskDate, user=request.user).order_by('taskDate')
 
         results = self.paginate_queryset(tasks, request, view=self)
         tasksSerializer = TaskSerializer(results, many=True)

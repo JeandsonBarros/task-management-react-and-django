@@ -12,7 +12,6 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 
 #https://medium.com/quick-code/token-based-authentication-for-django-rest-framework-44586a9a56fb
-
 #@csrf_exempt
 @swagger_auto_schema(methods=['post'],
                          request_body=openapi.Schema(
@@ -89,7 +88,7 @@ def update(request):
 
 @swagger_auto_schema(
         methods=['get'],
-        operation_description="Get user")
+        operation_description="Get user data")
 @api_view(["get"])
 def user(request):
     try:

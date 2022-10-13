@@ -1,9 +1,9 @@
 import { IconButton } from '@mui/material';
-import { BsFillTrashFill } from "react-icons/bs";
-import { putTask } from '../../../services/TaskService';
 import React, { useState } from 'react';
+import { BsFillPencilFill } from 'react-icons/bs';
+
+import { putTask } from '../../../services/TaskService';
 import ModalTask from '../../layouts/ModalTask';
-import { BsFillPencilFill } from "react-icons/bs";
 
 function TaskUpdate({ id, refresh, task }) {
 

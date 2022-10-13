@@ -1,10 +1,17 @@
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { BsCalendarCheck } from "react-icons/bs";
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { BsFillMoonStarsFill, BsFillSunFill, BsPersonCircle, BsGearFill, BsFillDoorOpenFill } from "react-icons/bs";
 import { useEffect, useState } from 'react';
-import { logout } from '../../services/AuthService'
-import { getToken } from '../../services/TokenService'
+import {
+    BsCalendarCheck,
+    BsFillDoorOpenFill,
+    BsFillMoonStarsFill,
+    BsFillSunFill,
+    BsGearFill,
+    BsPersonCircle,
+} from 'react-icons/bs';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import { logout } from '../../services/AuthService';
+import { getToken } from '../../services/TokenService';
 
 function Header({ themeSystem, setThemeSystem }) {
 
@@ -39,7 +46,7 @@ function Header({ themeSystem, setThemeSystem }) {
     return (
         <header className="App-header">
 
-            <Link style={{ textDecoration: 'none', color: themeSystem ? '#fff' : '#000' }} to='/'>
+            <Link style={{ textDecoration: 'none', color: themeSystem ? '#fff' : '#024959' }} to='/'>
                 <BsCalendarCheck />
                 <span>Task</span>
             </Link>

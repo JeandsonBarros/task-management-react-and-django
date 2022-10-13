@@ -23,6 +23,14 @@ const darkTheme = createTheme({
   },
 });
 
+/* 
+'#012E41'
+'#024A59'
+'#026773'
+'#3CA6A6'
+'#F3E3D4' 
+*/
+
 const ligthTheme = createTheme({
   palette: {
     mode: 'light',
@@ -31,10 +39,10 @@ const ligthTheme = createTheme({
       paper: '#3CA6A6',
     },
     action: {
-      disabledBackground: '#024959',
-      active: '#024959',
-      hover: '#024959',
-      disabled: '#024959',
+      disabledBackground: '#026773',
+      active: '#024A59',
+      hover: '#026773',
+      disabled: '#F3E3D4',
     },
     primary: {
       main: '#024959',

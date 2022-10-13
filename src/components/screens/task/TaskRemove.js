@@ -7,9 +7,10 @@ import {
     DialogTitle,
     IconButton
 } from '@mui/material';
-import { BsFillTrashFill } from "react-icons/bs";
-import { deleteTask } from '../../../services/TaskService';
 import React, { useState } from 'react';
+import { BsFillTrashFill } from 'react-icons/bs';
+
+import { deleteTask } from '../../../services/TaskService';
 
 function TaskRemove({ id, refresh, taskName }) {
 
@@ -44,11 +45,11 @@ function TaskRemove({ id, refresh, taskName }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    Remove task
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Realmente deseja deletar a tarefa {taskName}?
+                        Really want to delete the task {taskName}?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

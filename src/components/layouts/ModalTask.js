@@ -1,10 +1,13 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    LinearProgress,
+    TextField,
+} from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -14,21 +17,23 @@ function ModalTask({ open, setOpen, title, taskUpdate, action }) {
 
     const date = new Date()
     const [task, setTask] = useState(taskUpdate || { taskDate: date })
+    const [progress, setProgress] = useState(false)
 
     function setValuesTask(key, value) {
 
         let taskTemp = task
         taskTemp[key] = value
 
-        setTask({...task})
+        setTask({ ...task })
 
     }
 
     return (
 
         <Dialog open={open} onClose={() => setOpen(false)}>
+            {progress && <LinearProgress />}
 
-            <DialogTitle sx={{ mb: 2 }}> {title} tarefa</DialogTitle>
+            <DialogTitle sx={{ mb: 2 }}> {title} task</DialogTitle>
 
             <DialogContentText>
             </DialogContentText>
@@ -38,7 +43,7 @@ function ModalTask({ open, setOpen, title, taskUpdate, action }) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DateTimePicker
-                        label="Dia e hora da tarefa"
+                        label="Task day and time"
                         value={task.taskDate}
                         onChange={valueDate => setValuesTask('taskDate', valueDate)}
                         renderInput={(params) => <TextField {...params} />}
@@ -49,7 +54,7 @@ function ModalTask({ open, setOpen, title, taskUpdate, action }) {
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="Nome da tarefa"
+                    label="Task name"
                     type="text"
                     fullWidth
                     variant="standard"
@@ -61,7 +66,7 @@ function ModalTask({ open, setOpen, title, taskUpdate, action }) {
                     rows={4}
                     autoFocus
                     margin="dense"
-                    label="Descrição"
+                    label="Description"
                     type="text"
                     fullWidth
                     variant="standard"
@@ -73,12 +78,23 @@ function ModalTask({ open, setOpen, title, taskUpdate, action }) {
 
             <DialogActions>
 
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={() => {
+                    setOpen(false)
+                    setTask({ taskDate: date })
+                }}>
+                    Cancel
+                </Button>
 
                 <Button
-                    onClick={() => {
-                        action(task)
+                    onClick={async () => {
+                        setProgress(true)
+
+                        await action(task)
+
+                        setProgress(false)
                         setOpen(false)
+
+                        setTask({ taskDate: date })
                     }}>
                     {title}
                 </Button>

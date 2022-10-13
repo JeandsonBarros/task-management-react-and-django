@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { updateUser, getUser, deleteUser } from '../../../services/AuthService'
-import { useNavigate } from 'react-router-dom';
 import {
-    Button,
-    TextField,
     Alert,
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle,
+    LinearProgress,
+    TextField,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { deleteUser, getUser, updateUser } from '../../../services/AuthService';
 import PasswordField from '../../layouts/PasswordField';
-
-
 import styles from './Auth.module.css';
 
 function UserConfig() {
@@ -30,13 +30,25 @@ function UserConfig() {
 
     const [confirmModalVisible, setConfirmModalVisible] = useState(false)
 
+    const [progress, setProgress] = useState(false)
 
     useEffect(() => {
-        getUser().then(data => setUser(data))
+        getDataUser()
     }, [])
+
+    async function getDataUser() {
+        setProgress(true)
+
+        const userData = await getUser()
+        setUser(userData)
+
+        setProgress(false)
+    }
 
     async function userEdit(event) {
         event.preventDefault()
+
+        setProgress(true)
 
         const keys = ['username', 'email', 'first_name', 'last_name']
 
@@ -53,18 +65,22 @@ function UserConfig() {
             setAlertMessage({ text: "Data successfully updated!", status: 'success' })
         else
             setAlertMessage({ text: data, status: 'error' })
+
+        setProgress(false)
     }
 
     function setUserValue(key, value) {
 
         let userTemp = user
         user[key] = value
-        setUser({...userTemp})
+        setUser({ ...userTemp })
 
     }
 
     async function passwordUpdate(event) {
         event.preventDefault()
+
+        setProgress(true)
 
         if (!password || !passwordConfirm) {
             return setPasswordConfirmAlert({ text: "Don't leave empty fields!", status: 'error' })
@@ -81,11 +97,16 @@ function UserConfig() {
         else
             setPasswordConfirmAlert({ text: data, status: 'error' })
 
+        setProgress(false)
+
     }
 
     async function deleteAccount() {
-        console.log('deletar');
+        setProgress(true)
+
         const data = await deleteUser()
+
+        setProgress(false)
 
         if (data === 204)
             navigate('/login/')
@@ -166,7 +187,7 @@ function UserConfig() {
                                 onChange={event => setUserValue('last_name', event.target.value)}
                             />
                         </div>
-                        
+
                     </div>
 
                     <Button type="submit" css={{ margin: '25px auto', width: 20 }} variant="contained">
@@ -183,6 +204,8 @@ function UserConfig() {
 
     return (
         <section className={styles.containerRegister}>
+
+            {progress && <LinearProgress sx={{ width: '100%' }} />}
 
             {formUser()}
 

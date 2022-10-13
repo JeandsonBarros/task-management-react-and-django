@@ -1,11 +1,11 @@
-import { TextField, Button, Alert } from '@mui/material';
-import styles from './Auth.module.css';
-import { Link } from 'react-router-dom'
-import { BsPersonCircle } from "react-icons/bs";
+import { Alert, Button, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { register } from '../../../services/AuthService'
+import { BsPersonCircle } from 'react-icons/bs';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { register } from '../../../services/AuthService';
 import PasswordField from '../../layouts/PasswordField';
+import styles from './Auth.module.css';
 
 function Register() {
 
@@ -17,6 +17,8 @@ function Register() {
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [passwordLengthAlert, setPasswordLengthAlert] = useState(false)
 
+    const [progress, setProgress] = useState(false)
+
     function setUserValue(key, value) {
 
         let userTemp = user
@@ -27,6 +29,8 @@ function Register() {
 
     async function registerSubmit(event) {
         event.preventDefault()
+
+        setProgress(true)
 
         const keys = ['username', 'email', 'first_name', 'last_name', 'password']
 
@@ -49,6 +53,8 @@ function Register() {
             navigate('/')
         else
             setAlertMessage(data)
+
+        setProgress(false)
     }
 
     return (
@@ -128,6 +134,8 @@ function Register() {
                     </div>
 
                 </div>
+
+                {progress && <CircularProgress />}
 
                 <Button style={{ marginTop: 20 }} type='submit' variant="contained" >Sign up</Button>
                 <Link className={styles.registerLink} to="/login/">Login</Link>

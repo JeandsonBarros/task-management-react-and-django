@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from auth_user.serializers import UserSerializer
+from django.db.models import Q
+from django.contrib.auth.models import User
 
 #https://medium.com/quick-code/token-based-authentication-for-django-rest-framework-44586a9a56fb
 
@@ -46,18 +48,20 @@ def login(request):
     return Response({'token': token.key}, status=status.HTTP_200_OK)
 
 @swagger_auto_schema(
-        methods=['post'],
+        methods=['POST'],
         request_body=UserSerializer,
         operation_description="Save user")
 @api_view(["POST"])
 @permission_classes((AllowAny,))
 def register(request):
+    
     user = UserSerializer(data=request.data)
 
     if user.is_valid():
         user.save()
         return Response(status=status.HTTP_201_CREATED)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(
         methods=['delete'],

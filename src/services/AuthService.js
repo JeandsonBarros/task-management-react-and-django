@@ -9,12 +9,12 @@ export async function login(username, password) {
             setToken(response.data.token)
             return 200
         } else {
-            return "Verifique se as credenciais estão corretas."
+            return "Check that the credentials are correct."
         }
 
     } catch (error) {
         console.log(error);
-        return "Erro ao logar, verifique se as credenciais estão corretas."
+        return "Error logging in, check that the credentials are correct."
     }
 }
 
@@ -27,61 +27,76 @@ export async function register(user) {
             const status = await login(user.username, user.password)
             return status === 200 ? 201 : status
         } else {
-            return 'Erro ao cadastrar-se'
+            return 'Error registering'
         }
 
     } catch (error) {
-        console.log(error);
-        return 'Erro ao cadastrar-se'
+
+        if (error.response.data.email)
+            return 'Email must be unique.'
+
+        else if (error.response.data.username)
+            return error.response.data.username
+
+        return 'Error registering'
     }
 }
 
 export async function updateUser(user) {
     try {
 
-        const response = await api.patch('/auth/user/', user, 
-        {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        await api.patch('/auth/update/', user,
+            {
+                headers: {
+                    'Authorization': `token ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
 
-        return response.status
+        return 'success'
 
     } catch (error) {
-        console.log(error);
-        return error.status
+
+        if (error.response.data.email)
+            return 'Email must be unique.'
+
+        else if (error.response.data.username)
+            return error.response.data.username
+
+        else if (error.response.data.password)
+            return error.response.data.password
+
+        return 'Update error'
     }
 }
 
 export async function getUser() {
     try {
 
-        const response = await api.get("/auth/user/", 
-        {
-            headers: {
-                'Authorization': `token ${getToken()}`,
-            }
-        })
+        const response = await api.get("/auth/user/",
+            {
+                headers: {
+                    'Authorization': `token ${getToken()}`,
+                }
+            })
 
         return response.data
     } catch (error) {
         console.log(error);
-        return { username: 'Indisponível', email: 'Indisponível' }
+        return { username: 'unavailable', email: 'unavailable' }
     }
 }
 
 export async function deleteUser() {
     try {
 
-        const response = await api.delete("/auth/user/", 
-        {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        const response = await api.delete("/auth/delete/",
+            {
+                headers: {
+                    'Authorization': `token ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
         logout()
         return response.status
     } catch (error) {

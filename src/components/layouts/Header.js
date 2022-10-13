@@ -1,13 +1,30 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { BsCalendarCheck } from "react-icons/bs";
-import { IconButton, Popover, Typography } from '@mui/material';
-import { BsFillMoonStarsFill, BsFillSunFill, BsPersonCircle } from "react-icons/bs";
-import { useState } from 'react';
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { BsFillMoonStarsFill, BsFillSunFill, BsPersonCircle, BsGearFill, BsFillDoorOpenFill } from "react-icons/bs";
+import { useEffect, useState } from 'react';
+import { logout } from '../../services/AuthService'
+import { getToken } from '../../services/TokenService'
 
 function Header({ themeSystem, setThemeSystem }) {
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    const location = useLocation()
     const navigate = useNavigate()
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [menuVisible, setMenuVisible] = useState(false);
+
+    useEffect(() => {
+
+        if (location.pathname === '/login/' || location.pathname === '/register/')
+            setMenuVisible(false)
+
+        else if (getToken())
+            setMenuVisible(true)
+
+        else
+            navigate('/login/')
+
+    }, [location, navigate])
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -18,43 +35,50 @@ function Header({ themeSystem, setThemeSystem }) {
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
     return (
         <header className="App-header">
 
-            <a style={{ textDecoration: 'none', color: themeSystem ? '#fff' : '#000' }} href='/'>
+            <Link style={{ textDecoration: 'none', color: themeSystem ? '#fff' : '#000' }} to='/'>
                 <BsCalendarCheck />
                 <span>Task</span>
-            </a>
+            </Link>
 
             <div>
 
-                <IconButton onClick={handleClick}>
+                {menuVisible && <IconButton onClick={handleClick}>
 
                     <BsPersonCircle style={{ textAlign: 'center' }} />
 
-                </IconButton>
+                </IconButton>}
 
-                <Popover
-                    id={id}
-                    open={open}
+                <Menu
+                    id="basic-menu"
                     anchorEl={anchorEl}
+                    open={open}
                     onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
                     }}
                 >
 
-                    <Typography sx={{ p: 2 }}>
-                        
-                        <IconButton onClick={()=>navigate('/user-config/')}>
-                        User config
-                        </IconButton>
-                    </Typography>
+                    <MenuItem onClick={() => {
+                        handleClose()
+                        navigate('/user-config/')
+                    }}>
+                        <BsGearFill /> <Typography sx={{ ml: 1 }}>User config</Typography>
+                    </MenuItem>
 
-                </Popover>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose()
+                            logout()
+                            navigate('/login/'
+                            )
+                        }}>
+                        <BsFillDoorOpenFill /> <Typography sx={{ ml: 1 }}> Logout </Typography>
+                    </MenuItem>
+                </Menu>
 
                 <IconButton
                     onClick={() => {
@@ -68,7 +92,7 @@ function Header({ themeSystem, setThemeSystem }) {
 
             </div>
 
-        </header>
+        </header >
     );
 }
 

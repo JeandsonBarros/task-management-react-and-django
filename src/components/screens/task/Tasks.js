@@ -10,7 +10,7 @@ import {
     Divider,
     Typography,
     Button,
-    Card
+    Card,
 } from '@mui/material';
 
 import dayjs from 'dayjs';
@@ -40,6 +40,7 @@ export default function CustomizeDayPicker() {
     const [count, setCount] = useState(0)
 
     const [value, setValue] = useState(new Date());
+
 
     useEffect(() => {
         listTasks()
@@ -101,7 +102,7 @@ export default function CustomizeDayPicker() {
                                 setValueDate(newValue);
                                 listTasks(0, newDate, 'date')
                                 setOffset(0)
-
+                               
                             }}
                             renderInput={(params) => <TextField {...params} />}
                             dayOfWeekFormatter={(day) => `${day}.`}

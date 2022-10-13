@@ -1,16 +1,16 @@
 import './App.css';
-import Task from './components/screens/task/Tasks';
+
+import { CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Header from './components/layouts/Header';
 import Login from './components/screens/auth/Login';
-import Container from './components/screens/Container';
 import Register from './components/screens/auth/Register';
 import UserConfig from './components/screens/auth/UserConfig';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { BsCalendarCheck } from "react-icons/bs";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, IconButton, Popover, Typography } from '@mui/material';
-import { BsFillMoonStarsFill, BsFillSunFill, BsPersonCircle } from "react-icons/bs";
-import { useState } from 'react';
-import Header from './components/layouts/Header';
+import Container from './components/screens/Container';
+import Task from './components/screens/task/Tasks';
 
 /* https://color.adobe.com/pt/explore */
 const darkTheme = createTheme({
@@ -69,7 +69,7 @@ function App() {
               <Route path='*' element={<h1> 404 - Pagina não encontrada</h1>} />
               <Route path="/" element={<Task />} />
               <Route path="/login/" element={<Login />} />
-              <Route path="/registro/" element={<Register />} />
+              <Route path="/register/" element={<Register />} />
               <Route path="/user-config/" element={<UserConfig />} />
             </Routes>
 

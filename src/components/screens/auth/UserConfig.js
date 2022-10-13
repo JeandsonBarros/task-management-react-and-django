@@ -1,12 +1,24 @@
 import { useState, useEffect } from 'react';
 import { updateUser, getUser, deleteUser } from '../../../services/AuthService'
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Card, Accordion } from '@mui/material';
+import {
+    Button,
+    TextField,
+    Alert,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@mui/material';
+import PasswordField from '../../layouts/PasswordField';
+
+
+import styles from './Auth.module.css';
 
 function UserConfig() {
 
     const navigate = useNavigate()
-    const [confirmModalVisible, setConfirmModalVisible] = useState(false)
 
     const [alertMessage, setAlertMessage] = useState()
 
@@ -15,6 +27,9 @@ function UserConfig() {
     const [passwordConfirmAlert, setPasswordConfirmAlert] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [password, setPassword] = useState('')
+
+    const [confirmModalVisible, setConfirmModalVisible] = useState(false)
+
 
     useEffect(() => {
         getUser().then(data => setUser(data))
@@ -30,20 +45,21 @@ function UserConfig() {
         })
 
         if (checks)
-            return setAlertMessage({ text: "Não deixe campos vazios!", status: 500 })
+            return setAlertMessage({ text: "Don't leave empty fields!", status: 'error' })
 
         const data = await updateUser(user)
-        if (data === 200)
-            setAlertMessage({ text: "Dados atualizados com sucesso!", status: 200 })
+
+        if (data === 'success')
+            setAlertMessage({ text: "Data successfully updated!", status: 'success' })
         else
-            setAlertMessage({ text: "Erro ao atualizar dados!", status: 500 })
+            setAlertMessage({ text: data, status: 'error' })
     }
 
     function setUserValue(key, value) {
 
         let userTemp = user
         user[key] = value
-        setUser(userTemp)
+        setUser({...userTemp})
 
     }
 
@@ -51,18 +67,19 @@ function UserConfig() {
         event.preventDefault()
 
         if (!password || !passwordConfirm) {
-            return setPasswordConfirmAlert({ text: "Não deixe campos vazios", status: 'error' })
+            return setPasswordConfirmAlert({ text: "Don't leave empty fields!", status: 'error' })
         }
 
         if (password !== passwordConfirm) {
-            return setPasswordConfirmAlert({ text: 'Senhas não correspondem', status: 'error' })
+            return setPasswordConfirmAlert({ text: 'Passwords do not match', status: 'error' })
         }
 
         const data = await updateUser({ password })
-        if (data === 200)
-            setPasswordConfirmAlert({ text: "Senha atualizada com sucesso!", status: 'success' })
+
+        if (data === 'success')
+            setPasswordConfirmAlert({ text: "Password updated successfully!", status: 'success' })
         else
-            setPasswordConfirmAlert({ text: "Erro ao atualizar senha!", status: 'error' })
+            setPasswordConfirmAlert({ text: data, status: 'error' })
 
     }
 
@@ -80,60 +97,80 @@ function UserConfig() {
     function formUser() {
         if (user) {
             return (
-                <form onSubmit={userEdit} className="formRegister">
+                <form onSubmit={userEdit} className={styles.formUser}>
 
-                    <h1>Cadastro</h1>
+                    {alertMessage &&
 
-                    <div className='inputs'>
+                        <Alert
+                            sx={{ mt: 1, padding: 1 }}
+                            severity={alertMessage.status === 'success' ? 'success' : 'error'}>
 
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="Nome da tarefa"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={user.username}
-                            onChange={event => setUserValue('username', event.target.value)}
-                        />
+                            {alertMessage.text}
 
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="Nome da tarefa"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={user.email}
-                            onChange={event => setUserValue('email', event.target.value)}
-                        />
+                        </Alert>
 
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="Nome da tarefa"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={user.first_name}
-                            onChange={event => setUserValue('first_name', event.target.value)}
-                        />
+                    }
 
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="Nome da tarefa"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={user.last_name}
-                            onChange={event => setUserValue('last_name', event.target.value)}
-                        />
+                    <h1>Account details</h1>
 
+                    <div className={styles.inputs}>
+
+                        <div>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Username"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={user.username}
+                                onChange={event => setUserValue('username', event.target.value)}
+                            />
+                        </div>
+
+                        <div>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="E-mail"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={user.email}
+                                onChange={event => setUserValue('email', event.target.value)}
+                            />
+                        </div>
+
+                        <div>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="First name"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={user.first_name}
+                                onChange={event => setUserValue('first_name', event.target.value)}
+                            />
+                        </div>
+
+                        <div>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Last name"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                value={user.last_name}
+                                onChange={event => setUserValue('last_name', event.target.value)}
+                            />
+                        </div>
+                        
                     </div>
 
-                    <Button type="submit" css={{ margin: '25px auto', width: 20 }} shadow auto>
-                        Atualizar
+                    <Button type="submit" css={{ margin: '25px auto', width: 20 }} variant="contained">
+                        Update
                     </Button>
 
                 </form>
@@ -145,81 +182,93 @@ function UserConfig() {
     }
 
     return (
-        <section className='centerItems'>
-
-            {alertMessage && <Card css={{ mt: 10 }}>
-                <Card.Body >
-                    <span
-                        size={20}
-                        color={alertMessage.status === 200 ? 'green' : 'error'} >
-
-                        {alertMessage.text}
-
-                    </span>
-                </Card.Body>
-            </Card>}
+        <section className={styles.containerRegister}>
 
             {formUser()}
 
             <div>
 
-                <form onSubmit={passwordUpdate}>
+                <form onSubmit={passwordUpdate} className={styles.formUser}>
 
-                    {/*  <span color={passwordConfirmAlert.status} >{passwordConfirmAlert.text}</span> */}
+                    {passwordConfirmAlert &&
+                        <Alert
+                            sx={{ mt: 1, padding: 1 }}
+                            severity={passwordConfirmAlert.status === 'success' ? 'success' : 'error'}>
 
+                            {passwordConfirmAlert.text}
 
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Senha"
-                        type="password"
-                        fullWidth
-                        variant="standard"
-                        value={password}
-                        onChange={event => setPassword(event.target.value)}
-                    />
+                        </Alert>
+                    }
 
-                    <p></p>
+                    <h3>Password update</h3>
 
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Confirmar senha"
-                        type="password"
-                        fullWidth
-                        variant="standard"
-                        value={passwordConfirm}
-                        onChange={event => setPasswordConfirm(event.target.value)}
-                    />
+                    <div className={styles.inputs}>
 
-                    <Button type="submit" css={{ margin: '25px auto' }} shadow auto>
-                        Redefinir
+                        <PasswordField
+                            label='Password'
+                            value={password}
+                            setValue={setPassword}
+                        />
+
+                        <p></p>
+
+                        <PasswordField
+                            label='Confirma password'
+                            value={passwordConfirm}
+                            setValue={setPasswordConfirm}
+                        />
+
+                    </div>
+
+                    <Button type="submit" css={{ margin: '25px auto' }} variant="contained">
+                        Update
                     </Button>
 
                 </form>
 
-
             </div>
 
-            <div >
+            <div className={styles.formUser}>
 
-                <p > Deletar conta: </p>
+                <h3> Delete account: </h3>
 
                 <Button
-                    
+                    variant="contained"
                     onClick={() => setConfirmModalVisible(true)}
                     color="error"
-                   >
-                    Deletar
+                >
+                    Delete
                 </Button>
 
-                {/* <ModalConfirm
-                    visible={confirmModalVisible}
-                    setVisible={setConfirmModalVisible}
-                    title="Deletar conta"
-                    message="Realmente deseja deletar sua conta?"
-                    action={deleteAccount}
-                /> */}
+                <Dialog
+                    open={confirmModalVisible}
+                    onClose={() => setConfirmModalVisible(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        Delete account
+                    </DialogTitle>
+
+                    <DialogContent>
+
+                        <DialogContentText id="alert-dialog-description">
+                            when you delete this account all data will be permanently deleted, do you really want to delete it?
+                        </DialogContentText>
+
+                    </DialogContent>
+
+                    <DialogActions>
+
+                        <Button variant="contained" onClick={() => setConfirmModalVisible(false)}>Cancel</Button>
+
+                        <Button variant="contained" onClick={deleteAccount} color='error' autoFocus>
+                            Delete
+                        </Button>
+
+                    </DialogActions>
+
+                </Dialog>
 
             </div>
 

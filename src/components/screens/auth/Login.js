@@ -1,12 +1,13 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Alert } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import '../screens.css';
-import style from '../Screens.module.css';
+import style from './Auth.module.css';
 import { useNavigate } from "react-router-dom";
 import { login } from '../../../services/AuthService';
 import { BsPersonCircle } from "react-icons/bs";
 import { getToken, } from '../../../services/TokenService';
+import PasswordField from '../../layouts/PasswordField';
 
 function Login() {
 
@@ -16,7 +17,7 @@ function Login() {
     const [alertMessage, setAlertMessage] = useState()
 
     useEffect(() => {
-       
+
         if (getToken())
             return navigate("/");
     })
@@ -40,30 +41,30 @@ function Login() {
                 <BsPersonCircle style={{ fontSize: 70, margin: 10 }} />
                 <h1 >Login</h1>
 
-                <div className={style.inputContainer}>
+                {alertMessage &&
+                    <Alert sx={{ mt: 1, padding: 1 }} severity='error'>
+
+                        {alertMessage}
+
+                    </Alert>
+                }
+
                     <TextField
+                        sx={{mb:3, mt:3}}
                         className={style.textFieldContainer}
-                        onChange={event => {
-                            setEmail(event.target.value)
-                        }}
+                        onChange={event => setEmail(event.target.value)}
                         type='text'
                         label="E-mail"
                         variant="standard" />
-                </div>
+              
+                    <PasswordField
+                        label='Password'
+                        value={password}
+                        setValue={setPassword}
+                    />
 
-                <div className={style.inputContainer}>
-                    <TextField
-                        onChange={event => {
-                            setPassword(event.target.value)
-                        }}
-                        className={style.textFieldContainer}
-                        type='password'
-                        label="Senha"
-                        variant="standard" />
-                </div>
-
-                <Button type='submit' sx={{mt:10}} variant="contained" >Entrar</Button>
-                <Link className={style.registerLink} to="/registro/">Resgistro</Link>
+                <Button type='submit' sx={{ mt: 5 }} variant="contained" >Login</Button>
+                <Link className={style.registerLink} to="/register/">Sign up</Link>
 
             </div>
 

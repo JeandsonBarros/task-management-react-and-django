@@ -11,8 +11,9 @@ import Register from './components/screens/auth/Register';
 import UserConfig from './components/screens/auth/UserConfig';
 import Container from './components/screens/Container';
 import Task from './components/screens/task/Tasks';
+import Footer from './components/layouts/Footer';
 
-/* https://color.adobe.com/pt/explore */
+
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -80,6 +81,8 @@ function App() {
               <Route path="/register/" element={<Register />} />
               <Route path="/user-config/" element={<UserConfig />} />
             </Routes>
+
+            <Footer/>
 
           </BrowserRouter>
 

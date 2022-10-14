@@ -1,8 +1,9 @@
-.App-header {
+.App-header,
+footer {
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px); 
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 
     padding: 0 10px 0 10px;
@@ -12,9 +13,22 @@
     align-items: center;
     justify-content: space-between;
     font-size: calc(10px + 2vmin);
-   
+
 }
-.App-header span {
+
+footer a {
+    color: #3CA6A6;
     margin-left: 10px;
 }
 
+footer p {
+    font-size: 1rem;
+}
+
+footer a:hover {
+  filter: drop-shadow(1px 1px 2px #3CA6A6);
+}
+
+.App-header span {
+    margin-left: 10px;
+}

@@ -1,3 +1,5 @@
+<div>
+
 <img src="https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white"/>
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E"/>
@@ -5,10 +7,11 @@
 <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green"/>
 <img src="https://img.shields.io/badge/django%20rest-ff1709?style=for-the-badge&logo=django&logoColor=white"/>
 
+</div>
 
-# To-do list manager with React App
+# Task list manager with React App
 
-To-do list management web application, 
+Task list management web application, 
 developed with [React](https://github.com/facebook/create-react-app) 
 and [Django REST framework](https://www.django-rest-framework.org/).
 
